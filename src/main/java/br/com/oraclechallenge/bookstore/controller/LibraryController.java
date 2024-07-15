@@ -84,7 +84,7 @@ public class LibraryController implements CommandLineRunner {
 
     private void listAllAuthors() {
         List<Author> authors = libraryService.listAllAuthors();
-        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + author.getDeathDate()));
+        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
     }
 
     private void listAuthorsAliveOnDate(Scanner scanner) {
@@ -93,7 +93,7 @@ public class LibraryController implements CommandLineRunner {
         LocalDate date = LocalDate.parse(dateStr);
 
         List<Author> authors = libraryService.listAuthorsAliveOnDate(date);
-        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + author.getDeathDate()));
+        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
     }
 
     private void listBooksByLanguage(Scanner scanner) {
