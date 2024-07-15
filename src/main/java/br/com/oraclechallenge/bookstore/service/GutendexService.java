@@ -1,5 +1,6 @@
 package br.com.oraclechallenge.bookstore.service;
 
+import br.com.oraclechallenge.bookstore.dto.GutendexResponse;
 import br.com.oraclechallenge.bookstore.model.Book;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
