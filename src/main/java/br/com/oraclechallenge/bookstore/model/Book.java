@@ -2,7 +2,9 @@ package br.com.oraclechallenge.bookstore.model;
 
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Book {
@@ -12,10 +14,34 @@ public class Book {
     private Long id;
 
     private String title;
-    private String language;
+
+    @ElementCollection
+    private List<String> subjects;
 
     @ManyToMany
     private List<Author> authors;
+
+    @ElementCollection
+    private List<Person> translators;
+
+    @ElementCollection
+    private List<String> bookshelves;
+
+    @ElementCollection
+    private List<String> languages;
+
+    private Boolean copyright;
+
+    private String mediaType;
+
+    @ElementCollection
+    @CollectionTable(name = "book_formats")
+    @MapKeyColumn(name = "format_mime_type")
+    @Column(name = "format_url")
+    private Map<String, String> formats;
+
+    private Integer downloadCount;
+
 
     public Long getId() {
         return id;
@@ -34,11 +60,11 @@ public class Book {
     }
 
     public String getLanguage() {
-        return language;
+        return languages.toString();
     }
 
     public void setLanguage(String language) {
-        this.language = language;
+        this.languages = Collections.singletonList(language);
     }
 
     public List<Author> getAuthors() {

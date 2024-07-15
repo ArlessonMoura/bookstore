@@ -14,11 +14,14 @@ import java.util.Scanner;
 @Controller
 public class LibraryController {
 
-    @Autowired
-    private GutendexService gutendexService;
+    private final GutendexService gutendexService;
+    private final LibraryService libraryService;
 
     @Autowired
-    private LibraryService libraryService;
+    public LibraryController(GutendexService gutendexService, LibraryService libraryService) {
+        this.gutendexService = gutendexService;
+        this.libraryService = libraryService;
+    }
 
     public void menu(String... args) {
         Scanner scanner = new Scanner(System.in);
@@ -63,26 +66,38 @@ public class LibraryController {
         System.out.print("Enter the name or snippet of the book: ");
         String query = scanner.nextLine();
 
-        List<Book> books = gutendexService.searchBooks(query);
-        if (books.isEmpty()) {
-            System.out.println("No books found for the given query.");
-            return;
-        }
+        try {
+            List<Book> books = gutendexService.searchBooks(query);
+            if (books.isEmpty()) {
+                System.out.println("No books found for the given query.");
+                return;
+            }
 
-        books.forEach(book -> {
-            libraryService.saveBookAndAuthors(book);
-            System.out.println("Book and authors saved successfully!");
-        });
+            books.forEach(book -> {
+                libraryService.saveBookAndAuthors(book);
+                System.out.println("Book and authors saved successfully!");
+            });
+        } catch (Exception e) {
+            System.out.println("An error occurred while contributing to the library: " + e.getMessage());
+        }
     }
 
     private void listAllBooks() {
         List<Book> books = libraryService.listAllBooks();
+        if (books.isEmpty()) {
+            System.out.println("No books registered.");
+            return;
+        }
         books.forEach(book -> System.out.println("Title: " + book.getTitle() + ", Language: " + book.getLanguage()));
     }
 
     private void listAllAuthors() {
         List<Author> authors = libraryService.listAllAuthors();
-        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
+        if (authors.isEmpty()) {
+            System.out.println("No authors registered.");
+            return;
+        }
+        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getDeathDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
     }
 
     private void listAuthorsAliveOnDate(Scanner scanner) {
@@ -91,7 +106,11 @@ public class LibraryController {
         LocalDate date = LocalDate.parse(dateStr);
 
         List<Author> authors = libraryService.listAuthorsAliveOnDate(date);
-        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
+        if (authors.isEmpty()) {
+            System.out.println("No authors found alive on the given date.");
+            return;
+        }
+        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getDeathDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
     }
 
     private void listBooksByLanguage(Scanner scanner) {
@@ -99,7 +118,10 @@ public class LibraryController {
         String language = scanner.nextLine();
 
         List<Book> books = libraryService.listBooksByLanguage(language);
+        if (books.isEmpty()) {
+            System.out.println("No books found for the given language.");
+            return;
+        }
         books.forEach(book -> System.out.println("Title: " + book.getTitle() + ", Language: " + book.getLanguage()));
     }
 }
-

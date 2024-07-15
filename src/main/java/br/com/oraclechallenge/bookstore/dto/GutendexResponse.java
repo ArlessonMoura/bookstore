@@ -1,5 +1,6 @@
 package br.com.oraclechallenge.bookstore.dto;
 
+import br.com.oraclechallenge.bookstore.model.Author;
 import br.com.oraclechallenge.bookstore.model.Book;
 
 import java.util.List;
