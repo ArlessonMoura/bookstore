@@ -16,15 +16,16 @@ public class LibraryController {
 
     private final GutendexService gutendexService;
     private final LibraryService libraryService;
+    private final Scanner scanner;
 
     @Autowired
     public LibraryController(GutendexService gutendexService, LibraryService libraryService) {
         this.gutendexService = gutendexService;
         this.libraryService = libraryService;
+        this.scanner = new Scanner(System.in);
     }
 
     public void menu(String... args) {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("1 - Contribute to our library");
             System.out.println("2 - List all registered books.");
@@ -39,7 +40,7 @@ public class LibraryController {
 
             switch (option) {
                 case 1:
-                    contributeToLibrary(scanner);
+                    contributeToLibrary();
                     break;
                 case 2:
                     listAllBooks();
@@ -48,10 +49,10 @@ public class LibraryController {
                     listAllAuthors();
                     break;
                 case 4:
-                    listAuthorsAliveOnDate(scanner);
+                    listAuthorsAliveOnDate();
                     break;
                 case 5:
-                    listBooksByLanguage(scanner);
+                    listBooksByLanguage();
                     break;
                 case 6:
                     System.out.println("Exiting...");
@@ -62,66 +63,46 @@ public class LibraryController {
         }
     }
 
-    private void contributeToLibrary(Scanner scanner) {
+    private void contributeToLibrary() {
         System.out.print("Enter the name or snippet of the book: ");
         String query = scanner.nextLine();
 
-        try {
-            List<Book> books = gutendexService.searchBooks(query);
-            if (books.isEmpty()) {
-                System.out.println("No books found for the given query.");
-                return;
-            }
-
-            books.forEach(book -> {
-                libraryService.saveBookAndAuthors(book);
-                System.out.println("Book and authors saved successfully!");
-            });
-        } catch (Exception e) {
-            System.out.println("An error occurred while contributing to the library: " + e.getMessage());
+        List<Book> books = gutendexService.searchBooks(query);
+        if (books.isEmpty()) {
+            System.out.println("No books found for the given query.");
+            return;
         }
+
+        books.forEach(book -> {
+            libraryService.saveBookAndAuthors(book);
+            System.out.println("Book and authors saved successfully!");
+        });
     }
 
     private void listAllBooks() {
         List<Book> books = libraryService.listAllBooks();
-        if (books.isEmpty()) {
-            System.out.println("No books registered.");
-            return;
-        }
         books.forEach(book -> System.out.println("Title: " + book.getTitle() + ", Language: " + book.getLanguage()));
     }
 
     private void listAllAuthors() {
         List<Author> authors = libraryService.listAllAuthors();
-        if (authors.isEmpty()) {
-            System.out.println("No authors registered.");
-            return;
-        }
-        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getDeathDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
+        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
     }
 
-    private void listAuthorsAliveOnDate(Scanner scanner) {
+    private void listAuthorsAliveOnDate() {
         System.out.print("Enter the date (YYYY-MM-DD): ");
         String dateStr = scanner.nextLine();
         LocalDate date = LocalDate.parse(dateStr);
 
         List<Author> authors = libraryService.listAuthorsAliveOnDate(date);
-        if (authors.isEmpty()) {
-            System.out.println("No authors found alive on the given date.");
-            return;
-        }
-        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getDeathDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
+        authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
     }
 
-    private void listBooksByLanguage(Scanner scanner) {
+    private void listBooksByLanguage() {
         System.out.print("Enter the language: ");
         String language = scanner.nextLine();
 
         List<Book> books = libraryService.listBooksByLanguage(language);
-        if (books.isEmpty()) {
-            System.out.println("No books found for the given language.");
-            return;
-        }
         books.forEach(book -> System.out.println("Title: " + book.getTitle() + ", Language: " + book.getLanguage()));
     }
 }
