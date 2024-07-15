@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 @Controller
-public class LibraryController implements CommandLineRunner {
+public class LibraryController {
 
     @Autowired
     private GutendexService gutendexService;
@@ -21,8 +21,7 @@ public class LibraryController implements CommandLineRunner {
     @Autowired
     private LibraryService libraryService;
 
-    @Override
-    public void run(String... args) {
+    public void menu(String... args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("1 - Contribute to our library");
