@@ -5,7 +5,6 @@ import br.com.oraclechallenge.bookstore.model.Book;
 import br.com.oraclechallenge.bookstore.service.GutendexService;
 import br.com.oraclechallenge.bookstore.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
@@ -33,7 +32,7 @@ public class LibraryController {
             System.out.print("Choose an option: ");
 
             int option = scanner.nextInt();
-            scanner.nextLine(); // consume the newline
+            scanner.nextLine();
 
             switch (option) {
                 case 1:

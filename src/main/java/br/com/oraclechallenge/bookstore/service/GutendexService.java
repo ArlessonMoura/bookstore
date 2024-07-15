@@ -12,14 +12,16 @@ import java.util.List;
 public class GutendexService {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String GUTENDEX_API_URL = "https://gutendex.com/books";
 
     public List<Book> searchBooks(String query) {
+        String GUTENDEX_API_URL = "https://gutendex.com/books/";
+
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(GUTENDEX_API_URL)
                 .queryParam("search", query);
 
-        GutendexResponse response = restTemplate.getForObject(builder.toUriString(), GutendexResponse.class);
+        String url = builder.toUriString();
+        GutendexResponse response = restTemplate.getForObject(url, GutendexResponse.class);
+
         return response != null ? response.getResults() : List.of();
     }
 }
-
