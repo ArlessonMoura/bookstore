@@ -23,23 +23,68 @@ The project follows an MVC (Model-View-Controller) architecture for separation o
 
 ### Directory Structure
 
-src/
-├── main/
-│ ├── java/
-│ │ └── com/
-│ │ └── example/
-│ │ └── library/
-│ │ ├── controller/ # Controllers
-│ │ ├── model/ # Data Models (Entities)
-│ │ ├── repository/ # Repositories (Spring Data JPA)
-│ │ ├── service/ # Application Services
-│ │ └── LibraryApplication.java # Main class (entry point)
-│ └── resources/
-│ └── application.properties # Spring Boot configurations
-├── test/ # Unit and integration tests
-├── pom.xml # Maven configuration file
-├── .env # Environment variables file
-└── README.md # Project documentation
+.
+├── HELP.md
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── README.md
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── br
+│   │   │       └── com
+│   │   │           └── oraclechallenge
+│   │   │               └── bookstore
+│   │   │                   ├── BookstoreApplication.java
+│   │   │                   ├── controller
+│   │   │                   │   └── LibraryController.java
+│   │   │                   ├── dto
+│   │   │                   │   └── GutendexResponse.java
+│   │   │                   ├── model
+│   │   │                   │   ├── Author.java
+│   │   │                   │   └── Book.java
+│   │   │                   ├── repository
+│   │   │                   │   ├── AuthorRepository.java
+│   │   │                   │   └── BookRepository.java
+│   │   │                   └── service
+│   │   │                       ├── GutendexService.java
+│   │   │                       └── LibraryService.java
+│   │   └── resources
+│   │       ├── application.properties
+│   │       ├── static
+│   │       └── templates
+│   └── test
+│       └── java
+│           └── br
+│               └── com
+│                   └── oraclechallenge
+│                       └── bookstore
+│                           └── BookstoreApplicationTests.java
+└── target
+├── classes
+│   ├── application.properties
+│   └── br
+│       └── com
+│           └── oraclechallenge
+│               └── bookstore
+│                   ├── BookstoreApplication.class
+│                   ├── controller
+│                   │   └── LibraryController.class
+│                   ├── dto
+│                   │   └── GutendexResponse.class
+│                   ├── model
+│                   │   ├── Author.class
+│                   │   └── Book.class
+│                   ├── repository
+│                   │   ├── AuthorRepository.class
+│                   │   └── BookRepository.class
+│                   └── service
+│                       ├── GutendexService.class
+│                       └── LibraryService.class
+└── generated-sources
+└── annotations
+
 
 1**Running the Application**:
     - Use Maven to compile and run the application:
