@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LibraryService {
@@ -36,12 +37,12 @@ public class LibraryService {
         return authorRepository.findAll().stream()
                 .filter(author -> (author.getBirthDate() != null && !author.getBirthDate().isAfter(date))
                         && (author.getDeathDate() == null || !author.getDeathDate().isBefore(date)))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public List<Book> listBooksByLanguage(String language) {
         return bookRepository.findAll().stream()
                 .filter(book -> book.getLanguage().equalsIgnoreCase(language))
-                .toList();
+                .collect(Collectors.toList());
     }
 }
