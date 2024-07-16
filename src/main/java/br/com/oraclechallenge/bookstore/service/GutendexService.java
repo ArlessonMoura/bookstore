@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ public class GutendexService {
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
+    private final String GUTENDEX_API_URL = "https://gutendex.com/books/";
 
     public GutendexService() {
         this.httpClient = HttpClient.newHttpClient();
@@ -25,8 +27,6 @@ public class GutendexService {
     }
 
     public List<Book> searchBooks(String query) {
-        String GUTENDEX_API_URL = "https://gutendex.com/books/";
-
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(GUTENDEX_API_URL)
                 .queryParam("search", query);
 
@@ -38,7 +38,7 @@ public class GutendexService {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             GutendexResponse gutendexResponse = processResponseBody(response.body());
-            return gutendexResponse != null ? gutendexResponse.getResults() : List.of();
+            return gutendexResponse != null ? gutendexResponse.getResults() : Collections.emptyList();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Error while fetching data from Gutendex API", e);
         }
