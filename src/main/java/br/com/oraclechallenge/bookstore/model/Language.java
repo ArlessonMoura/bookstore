@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 @Entity
 public class Language {
 
+    public Language() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

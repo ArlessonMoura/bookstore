@@ -5,6 +5,9 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class Person {
 
+    public Person() {
+    }
+
     private Integer birthYear;
     private Integer deathYear;
     private String name;

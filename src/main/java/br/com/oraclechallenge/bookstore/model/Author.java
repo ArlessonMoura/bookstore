@@ -10,6 +10,9 @@ import java.time.LocalDate;
 @Entity
 public class Author {
 
+    public Author() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

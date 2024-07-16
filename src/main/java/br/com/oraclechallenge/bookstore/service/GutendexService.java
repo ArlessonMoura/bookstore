@@ -37,6 +37,7 @@ public class GutendexService {
 
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
             GutendexResponse gutendexResponse = processResponseBody(response.body());
             return gutendexResponse != null ? gutendexResponse.getResults() : Collections.emptyList();
         } catch (IOException | InterruptedException e) {

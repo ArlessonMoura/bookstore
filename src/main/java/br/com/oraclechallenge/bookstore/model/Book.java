@@ -2,12 +2,14 @@ package br.com.oraclechallenge.bookstore.model;
 
 import jakarta.persistence.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @Entity
 public class Book {
+
+    public Book() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +36,6 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
     private List<Language> languages;
-
 
     private Boolean copyright;
 
