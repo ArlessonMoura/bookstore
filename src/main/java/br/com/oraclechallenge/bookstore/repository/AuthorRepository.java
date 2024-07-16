@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Person, Long> {
     List<Person> findByNameContaining(String name);
-    @Query(value = "select p from person p where p.birthDate >= :year and p.deathDate <= :year", nativeQuery = true)
+
+    @Query(value = "select p.id, p.name, p.birth_date, p.death_date from person p where :year between p.birth_date and p.death_date", nativeQuery = true)
     Optional<List<Person>> findAliveAuthors(Year year);
 }

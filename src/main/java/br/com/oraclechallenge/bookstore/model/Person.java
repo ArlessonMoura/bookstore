@@ -7,7 +7,6 @@ import java.time.Year;
 import java.time.Year;
 
 @Entity
-@Embeddable
 public class Person {
 
     public Person() {
@@ -20,6 +19,7 @@ public class Person {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
