@@ -1,15 +1,13 @@
 package br.com.oraclechallenge.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.Year;
 import java.time.Year;
 
 @Entity
+@Embeddable
 public class Person {
 
     public Person() {
@@ -22,7 +20,6 @@ public class Person {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

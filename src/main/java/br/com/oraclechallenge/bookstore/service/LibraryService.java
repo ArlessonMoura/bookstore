@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,8 @@ public class LibraryService {
     }
 
     public List<Book> findBooksByLanguage(String language) {
-        return bookRepository.findByLanguage(language);
+        var listLanguague = new ArrayList<String>();
+        listLanguague.add(language);
+        return bookRepository.findByLanguages(listLanguague);
     }
 }

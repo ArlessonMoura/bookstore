@@ -27,26 +27,11 @@ public class Book {
 
     private String title;
 
-    @ElementCollection
-    private List<String> subjects;
-
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private Person author;
 
-    @ElementCollection
-    private List<Person> translators;
-
-    @ElementCollection
-    private List<String> bookshelves;
-
     private List<String> languages;
-
-    private Boolean copyright;
-
-    private String mediaType;
-
-    private Map<String, String> formats;
-
-    private Integer downloadCount;
 
     public String getTitle() {
         return title;

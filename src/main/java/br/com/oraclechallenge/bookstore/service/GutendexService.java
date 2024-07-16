@@ -2,9 +2,11 @@ package br.com.oraclechallenge.bookstore.service;
 
 import br.com.oraclechallenge.bookstore.dto.GutendexDTO;
 import br.com.oraclechallenge.bookstore.model.Book;
+import br.com.oraclechallenge.bookstore.repository.AuthorRepository;
 import br.com.oraclechallenge.bookstore.repository.BookRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.NoResultException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,11 +27,14 @@ public class GutendexService {
     private final ObjectMapper objectMapper;
     private final String GUTENDEX_API_URL = "https://gutendex.com/books/";
     private final BookRepository repository;
+    private final AuthorRepository authorRepository;
 
-    public GutendexService(BookRepository repository) {
+    public GutendexService(BookRepository repository, AuthorRepository authorRepository) {
         this.repository = repository;
+        this.authorRepository = authorRepository;
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     public void searchBooks(String query) {
@@ -64,7 +69,10 @@ public class GutendexService {
     }
 
     private void saveBooks(List<Book> books) {
-        books.forEach(repository::save);
+        books.forEach(book ->{
+            authorRepository.save(book.getAuthors());
+            repository.save(book);
+        });
     }
 
     private List<GutendexDTO> processResponseBody(String responseBody, String title) {
