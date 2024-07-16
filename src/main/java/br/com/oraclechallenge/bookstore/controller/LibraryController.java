@@ -1,13 +1,14 @@
 package br.com.oraclechallenge.bookstore.controller;
 
-import br.com.oraclechallenge.bookstore.model.Author;
 import br.com.oraclechallenge.bookstore.model.Book;
+import br.com.oraclechallenge.bookstore.model.Person;
 import br.com.oraclechallenge.bookstore.service.GutendexService;
 import br.com.oraclechallenge.bookstore.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 import java.util.Scanner;
 
@@ -66,17 +67,7 @@ public class LibraryController {
     private void contributeToLibrary() {
         System.out.print("Enter the name or snippet of the book: ");
         String query = scanner.nextLine();
-
-        List<Book> books = gutendexService.searchBooks(query);
-        if (books.isEmpty()) {
-            System.out.println("No books found for the given query.");
-            return;
-        }
-
-        books.forEach(book -> {
-            libraryService.saveBookAndAuthors(book);
-            System.out.println("Book and authors saved successfully!");
-        });
+        gutendexService.searchBooks(query);
     }
 
     private void listAllBooks() {
@@ -85,16 +76,16 @@ public class LibraryController {
     }
 
     private void listAllAuthors() {
-        List<Author> authors = libraryService.listAllAuthors();
+        List<Person> authors = libraryService.listAllAuthors();
         authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
     }
 
     private void listAuthorsAliveOnDate() {
-        System.out.print("Enter the date (YYYY-MM-DD): ");
+        System.out.print("Enter a tear (YYYY): ");
         String dateStr = scanner.nextLine();
-        LocalDate date = LocalDate.parse(dateStr);
+        Year date = Year.parse(dateStr);
 
-        List<Author> authors = libraryService.listAuthorsAliveOnDate(date);
+        List<Person> authors = libraryService.listAuthorsAliveOnDate(date);
         authors.forEach(author -> System.out.println("Name: " + author.getName() + ", Birth Date: " + author.getBirthDate() + ", Death Date: " + (author.getDeathDate() != null ? author.getDeathDate() : "N/A")));
     }
 

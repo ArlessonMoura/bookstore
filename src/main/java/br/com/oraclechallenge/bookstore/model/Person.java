@@ -1,38 +1,63 @@
 package br.com.oraclechallenge.bookstore.model;
 
-import jakarta.persistence.Embeddable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-@Embeddable
+import java.time.Year;
+import java.time.Year;
+
+@Entity
 public class Person {
 
     public Person() {
     }
 
-    private Integer birthYear;
-    private Integer deathYear;
-    private String name;
-
-    public Integer getDeathYear() {
-        return deathYear;
+    public Person(Person person) {
+        this.name = person.name;
+        this.deathDate = person.deathDate;
+        this.birthDate = person.birthDate;
     }
 
-    public Integer getBirthYear() {
-        return birthYear;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @JsonProperty("birth_year")
+    private Year birthDate;
+
+    @JsonProperty("death_year")
+    private Year deathDate;
+
+    public String getAuthor() {
+        return "Author: " + name;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setBirthYear(Integer birthYear) {
-        this.birthYear = birthYear;
-    }
-
-    public void setDeathYear(Integer deathYear) {
-        this.deathYear = deathYear;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Year getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Year birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Year getDeathDate() {
+        return deathDate;
+    }
+
+    public void setDeathDate(Year deathDate) {
+        this.deathDate = deathDate;
     }
 }

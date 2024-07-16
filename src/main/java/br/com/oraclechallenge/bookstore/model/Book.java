@@ -1,5 +1,6 @@
 package br.com.oraclechallenge.bookstore.model;
 
+import br.com.oraclechallenge.bookstore.dto.GutendexDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -13,6 +14,13 @@ public class Book {
     public Book() {
     }
 
+    public Book(GutendexDTO gutendexDTO) {
+        this.title = gutendexDTO.title();
+        Person author = new Person(gutendexDTO.authors().get(0));
+        this.author = author;
+        this.languages = gutendexDTO.languages();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,8 +30,7 @@ public class Book {
     @ElementCollection
     private List<String> subjects;
 
-    @ManyToMany
-    private List<Author> authors;
+    private Person author;
 
     @ElementCollection
     private List<Person> translators;
@@ -31,38 +38,26 @@ public class Book {
     @ElementCollection
     private List<String> bookshelves;
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_languages",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "language_id")
-    )
-    private List<Language> languages;
+    private List<String> languages;
 
     private Boolean copyright;
 
     private String mediaType;
 
-    @ElementCollection
-    @CollectionTable(name = "book_formats")
-    @MapKeyColumn(name = "format_mime_type")
-    @Column(name = "format_url")
     private Map<String, String> formats;
 
     private Integer downloadCount;
-
 
     public String getTitle() {
         return title;
     }
 
-
     public String getLanguage() {
         return languages != null ? languages.toString() : "";
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public Person getAuthors() {
+        return author;
     }
 
 }

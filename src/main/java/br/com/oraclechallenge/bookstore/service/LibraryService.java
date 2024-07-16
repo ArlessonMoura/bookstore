@@ -1,13 +1,15 @@
 package br.com.oraclechallenge.bookstore.service;
 
-import br.com.oraclechallenge.bookstore.model.Author;
 import br.com.oraclechallenge.bookstore.model.Book;
+import br.com.oraclechallenge.bookstore.model.Person;
 import br.com.oraclechallenge.bookstore.repository.AuthorRepository;
 import br.com.oraclechallenge.bookstore.repository.BookRepository;
+import jakarta.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,22 +29,19 @@ public class LibraryService {
 
     public void saveBookAndAuthors(Book book) {
         bookRepository.save(book);
-        book.getAuthors().forEach(author -> authorRepository.save(author));
+        authorRepository.save(book.getAuthors());
     }
 
     public List<Book> listAllBooks() {
         return bookRepository.findAll();
     }
 
-    public List<Author> listAllAuthors() {
+    public List<Person> listAllAuthors() {
         return authorRepository.findAll();
     }
 
-    public List<Author> listAuthorsAliveOnDate(LocalDate date) {
-        return authorRepository.findAll().stream()
-                .filter(author -> (author.getBirthDate() != null && !author.getBirthDate().isAfter(date))
-                        && (author.getDeathDate() == null || !author.getDeathDate().isBefore(date)))
-                .collect(Collectors.toList());
+    public List<Person> listAuthorsAliveOnDate(Year date) {
+        return authorRepository.findAliveAuthors(date).orElseThrow(() -> new NoResultException("It was a bad time for Authors, we can't find anyone else alive"));
     }
 
     public List<Book> findBooksByLanguage(String language) {
