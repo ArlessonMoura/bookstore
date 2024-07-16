@@ -1,11 +1,13 @@
 package br.com.oraclechallenge.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Map;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Book {
 
     public Book() {
@@ -48,7 +50,6 @@ public class Book {
     private Map<String, String> formats;
 
     private Integer downloadCount;
-
 
 
     public String getTitle() {

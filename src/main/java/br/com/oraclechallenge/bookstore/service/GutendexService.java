@@ -1,5 +1,6 @@
 package br.com.oraclechallenge.bookstore.service;
 
+import br.com.oraclechallenge.bookstore.dto.ApiResponse;
 import br.com.oraclechallenge.bookstore.dto.GutendexResponse;
 import br.com.oraclechallenge.bookstore.model.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,9 +38,9 @@ public class GutendexService {
 
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
             GutendexResponse gutendexResponse = processResponseBody(response.body());
-            return gutendexResponse != null ? gutendexResponse.getResults() : Collections.emptyList();
+//            return gutendexResponse != null ? gutendexResponse.results() : Collections.emptyList();
+            return null;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Error while fetching data from Gutendex API", e);
         }
@@ -55,7 +56,18 @@ public class GutendexService {
 
     private GutendexResponse processResponseBody(String responseBody) {
         try {
-            return objectMapper.readValue(responseBody, GutendexResponse.class);
+//            int startIndex = responseBody.indexOf("results");
+//            int endIndex = responseBody.indexOf("copyright");
+//            String resultSubstring = "";
+//            if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
+//                resultSubstring = responseBody.substring(startIndex, endIndex).trim();
+//                System.out.println(resultSubstring);
+//            } else {
+//                System.out.println("A substring não foi encontrada.");
+//            }
+
+            ApiResponse response = objectMapper.readValue(responseBody, ApiResponse.class);
+            return null;
         } catch (IOException e) {
             throw new RuntimeException("Error parsing JSON response from Gutendex API", e);
         }
