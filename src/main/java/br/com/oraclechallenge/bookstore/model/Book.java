@@ -27,8 +27,14 @@ public class Book {
     @ElementCollection
     private List<String> bookshelves;
 
-    @ElementCollection
-    private List<String> languages;
+    @ManyToMany
+    @JoinTable(
+            name = "book_languages",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
+    private List<Language> languages;
+
 
     private Boolean copyright;
 
@@ -61,10 +67,6 @@ public class Book {
 
     public String getLanguage() {
         return languages.toString();
-    }
-
-    public void setLanguage(String language) {
-        this.languages = Collections.singletonList(language);
     }
 
     public List<Author> getAuthors() {

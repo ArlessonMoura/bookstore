@@ -102,7 +102,7 @@ public class LibraryController {
         System.out.print("Enter the language: ");
         String language = scanner.nextLine();
 
-        List<Book> books = libraryService.listBooksByLanguage(language);
+        List<Book> books = libraryService.findBooksByLanguage(language);
         books.forEach(book -> System.out.println("Title: " + book.getTitle() + ", Language: " + book.getLanguage()));
     }
 }

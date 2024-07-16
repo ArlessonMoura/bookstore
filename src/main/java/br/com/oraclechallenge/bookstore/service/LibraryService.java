@@ -20,6 +20,11 @@ public class LibraryService {
     @Autowired
     private BookRepository bookRepository;
 
+    public LibraryService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+
     public void saveBookAndAuthors(Book book) {
         bookRepository.save(book);
         book.getAuthors().forEach(author -> authorRepository.save(author));
@@ -40,9 +45,7 @@ public class LibraryService {
                 .collect(Collectors.toList());
     }
 
-    public List<Book> listBooksByLanguage(String language) {
-        return bookRepository.findAll().stream()
-                .filter(book -> book.getLanguage().equalsIgnoreCase(language))
-                .collect(Collectors.toList());
+    public List<Book> findBooksByLanguage(String language) {
+        return bookRepository.findByLanguage(language);
     }
 }
